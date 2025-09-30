@@ -1,10 +1,8 @@
 import "dotenv/config";
 
-import { serve } from "@hono/node-server";
-import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { serveStatic } from "@hono/node-server/serve-static";
+import { serveStatic } from "hono/bun";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import type { Hook } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
@@ -197,9 +195,5 @@ app.get(
 
 app.use("*", serveStatic({ root: "./frontend/dist" }));
 app.use("*", serveStatic({ root: "./frontend/dist/index.html" }));
-
-serve(app, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`);
-});
 
 export default app;

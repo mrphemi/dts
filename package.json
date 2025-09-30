@@ -2,9 +2,8 @@
   "name": "dts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server/src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
+    "dev": "bun run --hot server/src/index.ts",
+    "start": "bun run server/src/index.ts",
     "test": "NODE_ENV=test vitest",
     "test:watch": "NODE_ENV=test vitest --watch",
     "test:ui": "vitest --ui"
