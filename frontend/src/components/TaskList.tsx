@@ -3,7 +3,7 @@ import { TaskItem } from "./TaskItem";
 
 interface TaskListProps {
   tasks: TaskWithID[];
-  onTaskClick: (task: TaskWithID) => void;
+  onTaskClick: (taskId: number) => void;
   isLoading?: boolean;
 }
 
@@ -31,7 +31,11 @@ export const TaskList = ({
   return (
     <ul className="grid gap-4 mt-10">
       {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} onClick={() => onTaskClick(task)} />
+        <TaskItem
+          key={task.id}
+          task={task}
+          onClick={() => onTaskClick(task.id)}
+        />
       ))}
     </ul>
   );

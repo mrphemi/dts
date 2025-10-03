@@ -5,11 +5,20 @@ const API_BASE_URL = "/api";
 type TransformedTaskType = Task & {
   id: number;
 };
+
 export const tasksApi = {
   getTasks: async (): Promise<{ tasks: TransformedTaskType[] }> => {
     const response = await fetch(`${API_BASE_URL}/tasks`);
     if (!response.ok) {
       throw new Error("Failed to fetch tasks");
+    }
+    return response.json();
+  },
+
+  getTaskById: async (id: number): Promise<{ task: TransformedTaskType }> => {
+    const response = await fetch(`${API_BASE_URL}/tasks/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch task");
     }
     return response.json();
   },

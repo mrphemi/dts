@@ -1,15 +1,17 @@
 import { type FormEvent } from "react";
+import { useTasks } from "../hooks/useTasks";
 
-interface TaskFormProps {
-  onSubmit: (data: {
+export const TaskForm = () => {
+  const { createTask, isCreating } = useTasks();
+
+  const handleCreateTask = (data: {
     title: string;
     description: string;
     dueDate: string;
-  }) => void;
-  isSubmitting?: boolean;
-}
+  }) => {
+    createTask(data);
+  };
 
-export const TaskForm = ({ onSubmit, isSubmitting = false }: TaskFormProps) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -18,7 +20,7 @@ export const TaskForm = ({ onSubmit, isSubmitting = false }: TaskFormProps) => {
       description: form.get("description") as string,
       dueDate: form.get("dueDate") as string,
     };
-    onSubmit(data);
+    handleCreateTask(data);
     e.currentTarget.reset();
   };
 
@@ -34,7 +36,7 @@ export const TaskForm = ({ onSubmit, isSubmitting = false }: TaskFormProps) => {
           name="title"
           className="p-2 border border-slate-500 rounded-lg"
           required
-          disabled={isSubmitting}
+          disabled={isCreating}
         />
       </div>
 
@@ -46,7 +48,7 @@ export const TaskForm = ({ onSubmit, isSubmitting = false }: TaskFormProps) => {
           id="description"
           name="description"
           className="p-2 border border-slate-500 rounded-lg min-h-[80px]"
-          disabled={isSubmitting}
+          disabled={isCreating}
         />
       </div>
 
@@ -59,16 +61,16 @@ export const TaskForm = ({ onSubmit, isSubmitting = false }: TaskFormProps) => {
           type="date"
           name="dueDate"
           className="p-2 border border-slate-500 rounded-lg"
-          disabled={isSubmitting}
+          disabled={isCreating}
         />
       </div>
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isCreating}
         className="p-2 border border-slate-500 rounded-lg mt-5 cursor-pointer hover:bg-slate-700 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isSubmitting ? "Adding..." : "Add Task"}
+        {isCreating ? "Adding..." : "Add Task"}
       </button>
     </form>
   );

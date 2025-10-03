@@ -24,8 +24,11 @@ export const useTasks = () => {
       id: number;
       status: "pending" | "completed";
     }) => tasksApi.updateTaskStatus(id, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    onSuccess: async ({ task }) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+        queryClient.invalidateQueries({ queryKey: ["task", task] }),
+      ]);
     },
   });
 
@@ -47,4 +50,13 @@ export const useTasks = () => {
     isUpdating: updateTaskStatusMutation.isPending,
     isDeleting: deleteTaskMutation.isPending,
   };
+};
+
+export const useTask = (id: number | null) => {
+  return useQuery({
+    queryKey: ["task", id],
+    queryFn: () => tasksApi.getTaskById(id!),
+    enabled: id !== null,
+    staleTime: 30000,
+  });
 };
